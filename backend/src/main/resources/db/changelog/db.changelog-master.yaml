@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/001-create-tables.sql
+
+  - include:
+      file: db/changelog/002-create-books-categories-authors-tables.sql
+
+  - include:
+      file: db/changelog/003-create-missing-requied-constraints.sql
