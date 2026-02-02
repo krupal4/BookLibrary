@@ -11,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class BookServiceImpl implements BookService {
@@ -21,5 +23,11 @@ public class BookServiceImpl implements BookService {
         Book bookModel = BookMapper.toModel(bookDto);
         Book createdBookModel = bookRepository.save(bookModel);
         return BookMapper.toDto(createdBookModel);
+    }
+
+    @Override
+    public List<BookDto> getBooks() {
+        bookRepository.findAllByUser;
+        return ;
     }
 }

@@ -1,8 +1,10 @@
 package com.rightdevs.BookLibrary.service;
 
 import com.rightdevs.BookLibrary.dto.BookDto;
-import com.rightdevs.BookLibrary.entity.User;
+import java.util.List;
 
 public interface BookService {
     public BookDto createBook(BookDto bookDto);
+
+    public List<BookDto> getBooks();
 }

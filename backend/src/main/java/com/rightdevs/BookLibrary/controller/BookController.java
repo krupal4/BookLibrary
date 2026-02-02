@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/books")
@@ -28,6 +30,21 @@ public class BookController {
             User user = ((User) authentication.getPrincipal());
 
             BookDto requestDto = BookMapper.toDtoFromRequest(bookRequestModel, user);
+            BookDto createdBookDto = bookService.createBook(requestDto);
+            return new ResponseEntity<>(createdBookDto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<BookDto>> getBooks() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            assert authentication != null;
+            User user = ((User) authentication.getPrincipal());
+
+            BookDto requestDto = BookMapper.toDtoFromRequest(user);
             BookDto createdBookDto = bookService.createBook(requestDto);
             return new ResponseEntity<>(createdBookDto, HttpStatus.CREATED);
         } catch (Exception e) {
