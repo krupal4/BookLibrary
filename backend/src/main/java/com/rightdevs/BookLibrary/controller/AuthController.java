@@ -14,27 +14,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/auth/")
+@RequestMapping("/api/auth/")
 public class AuthController {
     private AuthService authService;
 
-    @PostMapping("signUp")
+    @PostMapping("/signUp")
     public ResponseEntity<LoginResponseDto> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
         try {
             LoginResponseDto loginResponseDto = authService.signUp(signUpRequestDto);
             return new ResponseEntity<>(loginResponseDto, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(new LoginResponseDto(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new LoginResponseDto(), HttpStatus.UNAUTHORIZED);
         }
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         try {
             LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
             return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(new LoginResponseDto(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new LoginResponseDto(), HttpStatus.UNAUTHORIZED);
         }
     }
 }

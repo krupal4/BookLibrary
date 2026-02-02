@@ -27,14 +27,9 @@ public class AuthService {
                         loginRequestDto.getEmail(),
                         loginRequestDto.getPassword()));
 
-        // Inspect the principal
-        Object principal = authentication.getPrincipal();
-        System.out.println("Principal class: " + principal.getClass().getName());
-        System.out.println("Principal: " + principal);
+        User user = (User) authentication.getPrincipal();
 
-        User user = (User) principal;
-
-        if (user.getId() == null)
+        if (user == null)
             throw new Exception("User not found!");
 
         String token = authUtil.generateAccessToken(user);

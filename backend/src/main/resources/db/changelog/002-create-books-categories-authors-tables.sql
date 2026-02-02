@@ -13,12 +13,14 @@ create table users(
 create table categories(
         id bigint generated always as identity primary key,
         name varchar(255) not null,
-        created_on date default current_date
+        created_by bigint references users(id),
+        created_on timestamp default  current_timestamp
 );
 
 create table authors(
         id bigint generated always as identity primary key,
-        name varchar(255) not null
+        name varchar(255) not null,
+        created_by bigint references users(id)
 );
 
 create table books(
@@ -26,8 +28,9 @@ create table books(
         title varchar(255) not null,
         description varchar(1023) not null ,
         rating double precision not null ,
-        published_on date default null,
-        created_on date default current_date
+        published_on timestamp default null,
+        created_by bigint references users(id),
+        created_on timestamp default current_timestamp
 );
 
 create table book_authors(
