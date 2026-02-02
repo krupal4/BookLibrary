@@ -9,6 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class CreateBookRequestDto {
+    Long id;
     String title;
     String description;
     double rating;

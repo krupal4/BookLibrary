@@ -13,7 +13,7 @@ public class BookMapper {
                 bookModel.getDescription(),
                 bookModel.getRating(),
                 bookModel.getPublishedOn(),
-                bookModel.getCreatedOn(),
+                bookModel.getCreatedAt(),
                 UserMapper.toDto(bookModel.getCreatedBy())
         );
     }
@@ -25,18 +25,18 @@ public class BookMapper {
                 dto.getDescription(),
                 dto.getRating(),
                 dto.getPublishedOn(),
-                dto.getCreatedOn(),
+                dto.getCreatedAt(),
                 UserMapper.toEntityModel(dto.getCreatedBy())
         );
     }
 
-    public static BookDto toDtoFromRequest(CreateBookRequestDto reqest, User user) {
+    public static BookDto toDtoFromRequest(CreateBookRequestDto request, User user) {
         return new BookDto(
-                null,
-                reqest.getTitle(),
-                reqest.getDescription(),
-                reqest.getRating(),
-                reqest.getPublishedOn(),
+                request.getId(),
+                request.getTitle(),
+                request.getDescription(),
+                request.getRating(),
+                request.getPublishedOn(),
                 null,
                 UserMapper.toDto(user)
         );

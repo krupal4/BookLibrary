@@ -14,7 +14,7 @@ create table categories(
         id bigint generated always as identity primary key,
         name varchar(255) not null,
         created_by bigint references users(id),
-        created_on timestamp default  current_timestamp
+        created_at timestamp default current_timestamp
 );
 
 create table authors(
@@ -30,7 +30,7 @@ create table books(
         rating double precision not null ,
         published_on timestamp default null,
         created_by bigint references users(id),
-        created_on timestamp default current_timestamp
+        created_at timestamp default current_timestamp
 );
 
 create table book_authors(

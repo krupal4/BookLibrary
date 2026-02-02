@@ -32,7 +32,7 @@ public class Book {
     Date publishedOn;
 
     @Column(nullable = false, updatable = false, insertable = false)
-    Date createdOn;
+    Date createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)

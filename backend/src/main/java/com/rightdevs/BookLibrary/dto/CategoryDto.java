@@ -1,20 +1,20 @@
 package com.rightdevs.BookLibrary.dto;
 
+import com.rightdevs.BookLibrary.entity.User;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 
-@AllArgsConstructor
 @Getter
 @Setter
-public class BookDto {
+@AllArgsConstructor
+public class CategoryDto {
     Long id;
-    String title;
-    String description;
-    double rating;
-    Date publishedOn;
+    String name;
     Date createdAt;
     UserDto createdBy;
 }
