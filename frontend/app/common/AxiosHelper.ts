@@ -1,12 +1,11 @@
 import axios, { type AxiosInstance } from "axios";
-
-const baseURL = "http://localhost:8080"
+import ApiConstants from "~/constants/ApiConstants";
 
 export class AxiosHelper {
     public static getAxiousInstance(): AxiosInstance {
        
         const axiosInstance = axios.create({
-            baseURL: baseURL,
+            baseURL: ApiConstants.BASE_URL,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -30,24 +29,19 @@ export class AxiosHelper {
             }
         }
 
-        const responseInterceptor = {
-            onFulfilled: (response: any) => response,
-            onRejected: (error: any) => {
-                return Promise.reject(error);
-            }
-        }
-
-
         axiosInstance.interceptors.request.use(
             requestInterceptor.onFulfilled,
             requestInterceptor.onRejected,
         );
 
-        axiosInstance.interceptors.response.use(
-            responseInterceptor.onFulfilled,
-            responseInterceptor.onRejected,
-        );
-
         return axiosInstance;
+    }
+
+    public static saveJwtToken(token: string): void {
+        localStorage.setItem('authToken', token);
+    }
+
+    public static getJwtToken(): string | null {
+        return localStorage.getItem('authToken');
     }
 }

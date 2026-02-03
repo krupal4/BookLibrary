@@ -20,21 +20,13 @@ public class AuthController {
 
     @PostMapping("/signUp")
     public ResponseEntity<LoginResponseDto> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
-        try {
-            LoginResponseDto loginResponseDto = authService.signUp(signUpRequestDto);
-            return new ResponseEntity<>(loginResponseDto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new LoginResponseDto(), HttpStatus.UNAUTHORIZED);
-        }
+        LoginResponseDto loginResponseDto = authService.signUp(signUpRequestDto);
+        return new ResponseEntity<>(loginResponseDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        try {
-            LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
-            return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new LoginResponseDto(), HttpStatus.UNAUTHORIZED);
-        }
+        LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
+        return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
     }
 }

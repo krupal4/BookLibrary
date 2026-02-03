@@ -30,17 +30,8 @@ create table books(
         rating double precision not null ,
         published_on timestamp default null,
         created_by bigint references users(id),
+        author_name varchar(255),
         created_at timestamp default current_timestamp
-);
-
-create table book_authors(
-    book_id bigint not null,
-    author_id bigint not null,
-    primary key (book_id, author_id),
-    constraint fk_book_authors_book
-        foreign key (book_id) references books(id) on delete cascade,
-    constraint fk_book_authors_author
-        foreign key (author_id) references authors(id) on delete cascade
 );
 
 create  table book_categories(

@@ -10,10 +10,12 @@ import com.rightdevs.BookLibrary.repository.CategoryRepository;
 import com.rightdevs.BookLibrary.service.BookService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +41,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getBooks(Long userId) {
+    public List<BookDto> getBooks(Long userId, int pageIndex, int pageSize) {
         List<Book> bookModels = bookRepository.findByCreatedById(userId);
         return bookModels.stream()
                 .map(BookMapper::toDto)
@@ -47,7 +49,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(Long bookId) {
+    public void deleteBook(Long bookId, Long userId) throws AccessDeniedException {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("No book found with given bookId"));
+
+
+        if (!book.getCreatedBy().getId().equals(userId)) {
+            throw new AccessDeniedException("Can not delete this book");
+        }
+
         bookRepository.deleteById(bookId);
     }
 }

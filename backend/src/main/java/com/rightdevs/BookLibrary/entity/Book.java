@@ -32,6 +32,9 @@ public class Book {
     @Column(nullable = true)
     Date publishedOn;
 
+    @Column(nullable = true)
+    String authorName;
+
     @Column(nullable = false, updatable = false, insertable = false)
     Date createdAt;
 

@@ -9,11 +9,6 @@ export const StylesProvider: FunctionComponent<StylesProviderProps> = ({ childre
     return (
         <ConfigProvider
             theme={{
-                token: {
-                    colorPrimary: '#00b96b',
-                    borderRadius: 2,
-                    colorBgContainer: '#f6ffed',
-                },
             }}
         >
             {children}

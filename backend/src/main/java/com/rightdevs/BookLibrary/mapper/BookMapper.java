@@ -16,6 +16,7 @@ public class BookMapper {
                 bookModel.getDescription(),
                 bookModel.getRating(),
                 bookModel.getPublishedOn(),
+                bookModel.getAuthorName(),
                 bookModel.getCreatedAt(),
                 UserMapper.toDto(bookModel.getCreatedBy()),
                 bookModel.getCategories().stream()
@@ -30,6 +31,7 @@ public class BookMapper {
                 dto.getDescription(),
                 dto.getRating(),
                 dto.getPublishedOn(),
+                dto.getAuthorName(),
                 dto.getCreatedAt(),
                 UserMapper.toEntityModel(dto.getCreatedBy()),
                 dto.getCategories().stream()
@@ -44,6 +46,7 @@ public class BookMapper {
                 request.getDescription(),
                 request.getRating(),
                 request.getPublishedOn(),
+                request.getAuthorName(),
                 null,
                 UserMapper.toDto(user),
                 request.getCategories() == null

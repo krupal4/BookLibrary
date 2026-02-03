@@ -16,6 +16,7 @@ public class BookDto {
     String description;
     double rating;
     Date publishedOn;
+    String authorName;
     Date createdAt;
     UserDto createdBy;
     Set<CategoryDto> categories;

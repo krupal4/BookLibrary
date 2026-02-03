@@ -10,13 +10,11 @@ export class ApiClient {
 
     public async get<TResponse>(endpoint: string): Promise<TResponse> {
         const res = await ApiClient.axios.get(endpoint);
-        console.log("get res: ", res)
-        return res as TResponse;
+        return res.data as TResponse;
     }
 
     public async post<TResponse>(endpoint: string, data: any): Promise<TResponse> {
         const res = await ApiClient.axios.post(endpoint, data);
-        console.log("post res: ", res)
-        return res as TResponse;
+        return res.data as TResponse;
     }
 }

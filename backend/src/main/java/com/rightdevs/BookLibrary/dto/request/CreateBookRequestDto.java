@@ -15,5 +15,6 @@ public class CreateBookRequestDto {
     String description;
     double rating;
     Date publishedOn;
+    String authorName;
     List<CategoryRequestDto> categories;
 }

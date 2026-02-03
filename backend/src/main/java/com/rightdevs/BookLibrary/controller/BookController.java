@@ -9,9 +9,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -21,42 +23,31 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping("/save")
-    public ResponseEntity<BookDto> createBook(@RequestBody CreateBookRequestDto bookRequestModel) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            assert authentication != null;
-            User user = ((User) authentication.getPrincipal());
-
-            BookDto requestDto = BookMapper.toDtoFromRequest(bookRequestModel, user);
-            BookDto createdBookDto = bookService.createBook(requestDto);
-            return new ResponseEntity<>(createdBookDto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<BookDto> createBook(
+            @RequestBody CreateBookRequestDto bookRequestModel,
+            @AuthenticationPrincipal User user
+    ) {
+        BookDto requestDto = BookMapper.toDtoFromRequest(bookRequestModel, user);
+        BookDto createdBookDto = bookService.createBook(requestDto);
+        return new ResponseEntity<>(createdBookDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BookDto>> getBooks() {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            assert authentication != null;
-            User user = ((User) authentication.getPrincipal());
-            assert user != null;
-
-            List<BookDto> bookDtoList = bookService.getBooks(user.getId());
-            return ResponseEntity.ok(bookDtoList);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<List<BookDto>> getBooks(
+            @AuthenticationPrincipal User user,
+            @RequestParam int pageIndex,
+            @RequestParam int pageSize
+            ) {
+        List<BookDto> bookDtoList = bookService.getBooks(user.getId(), pageIndex, pageSize);
+        return ResponseEntity.ok(bookDtoList);
     }
 
     @DeleteMapping("/delete/{bookId}")
-    public ResponseEntity deleteBook(@PathVariable Long bookId) {
-        try {
-            bookService.deleteBook(bookId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity deleteBook(
+            @PathVariable Long bookId,
+            @AuthenticationPrincipal User user
+    ) throws AccessDeniedException {
+        bookService.deleteBook(bookId, user.getId());
+        return ResponseEntity.ok().build();
     }
 }

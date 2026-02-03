@@ -21,7 +21,7 @@ public class AuthService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
 
-    public LoginResponseDto login(LoginRequestDto loginRequestDto) throws Exception {
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.getEmail(),
@@ -29,9 +29,7 @@ public class AuthService {
 
         User user = (User) authentication.getPrincipal();
 
-        if (user == null)
-            throw new Exception("User not found!");
-
+        assert user != null;
         String token = authUtil.generateAccessToken(user);
 
         return  new LoginResponseDto(
