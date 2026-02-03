@@ -13,18 +13,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    restart: always
-    ports:
-      - "5050:80"
-
-    environment:
-      PGADMIN_DEFAULT_EMAIL: krupal@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: krupal
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-
 volumes:
   pgadmin-data:
   postgres_data:
