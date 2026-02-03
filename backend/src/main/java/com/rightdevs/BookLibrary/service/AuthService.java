@@ -1,8 +1,8 @@
 package com.rightdevs.BookLibrary.service;
 
-import com.rightdevs.BookLibrary.dto.LoginRequestDto;
-import com.rightdevs.BookLibrary.dto.LoginResponseDto;
-import com.rightdevs.BookLibrary.dto.SignUpRequestDto;
+import com.rightdevs.BookLibrary.dto.request.LoginRequestDto;
+import com.rightdevs.BookLibrary.dto.response.LoginResponseDto;
+import com.rightdevs.BookLibrary.dto.request.SignUpRequestDto;
 import com.rightdevs.BookLibrary.entity.User;
 import com.rightdevs.BookLibrary.repository.UserRepository;
 import com.rightdevs.BookLibrary.utils.AuthUtil;

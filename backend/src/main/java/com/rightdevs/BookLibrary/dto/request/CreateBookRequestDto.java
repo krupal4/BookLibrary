@@ -1,10 +1,11 @@
-package com.rightdevs.BookLibrary.dto;
+package com.rightdevs.BookLibrary.dto.request;
 
+import com.rightdevs.BookLibrary.dto.CategoryDto;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,4 +15,5 @@ public class CreateBookRequestDto {
     String description;
     double rating;
     Date publishedOn;
+    List<CategoryRequestDto> categories;
 }

@@ -3,6 +3,7 @@ package com.rightdevs.BookLibrary.security;
 import com.rightdevs.BookLibrary.entity.User;
 import com.rightdevs.BookLibrary.repository.UserRepository;
 import com.rightdevs.BookLibrary.utils.AuthUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,8 +55,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
             filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException jwtException) {
+            log.error("JWT Token has expired", jwtException);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"Token expired\",\"message\":\"" + jwtException.getMessage() + "\"}");
+            return;
         } catch (Exception ex) {
-            handlerExceptionResolver.resolveException(request, response, null, ex);
+            log.error("Authentication error", ex);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"Authentication failed\",\"message\":\"" + ex.getMessage() + "\"}");
+            return;
         }
     }
 }

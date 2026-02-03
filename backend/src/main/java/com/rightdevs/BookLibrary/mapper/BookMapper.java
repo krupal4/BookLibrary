@@ -1,9 +1,12 @@
 package com.rightdevs.BookLibrary.mapper;
 
 import com.rightdevs.BookLibrary.dto.BookDto;
-import com.rightdevs.BookLibrary.dto.CreateBookRequestDto;
+import com.rightdevs.BookLibrary.dto.request.CreateBookRequestDto;
 import com.rightdevs.BookLibrary.entity.Book;
 import com.rightdevs.BookLibrary.entity.User;
+
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class BookMapper {
     public static BookDto toDto(Book bookModel) {
@@ -14,7 +17,9 @@ public class BookMapper {
                 bookModel.getRating(),
                 bookModel.getPublishedOn(),
                 bookModel.getCreatedAt(),
-                UserMapper.toDto(bookModel.getCreatedBy())
+                UserMapper.toDto(bookModel.getCreatedBy()),
+                bookModel.getCategories().stream()
+                        .map(CategoryMapper::toDto).collect(Collectors.toSet())
         );
     }
 
@@ -26,7 +31,9 @@ public class BookMapper {
                 dto.getRating(),
                 dto.getPublishedOn(),
                 dto.getCreatedAt(),
-                UserMapper.toEntityModel(dto.getCreatedBy())
+                UserMapper.toEntityModel(dto.getCreatedBy()),
+                dto.getCategories().stream()
+                        .map(CategoryMapper::toEntityModel).collect(Collectors.toSet())
         );
     }
 
@@ -38,7 +45,12 @@ public class BookMapper {
                 request.getRating(),
                 request.getPublishedOn(),
                 null,
-                UserMapper.toDto(user)
+                UserMapper.toDto(user),
+                request.getCategories() == null
+                    ? new HashSet<>()
+                    : request.getCategories().stream()
+                        .map(cat -> CategoryMapper.toDtoFromRequest(cat, user))
+                        .collect(Collectors.toSet())
         );
     }
 }

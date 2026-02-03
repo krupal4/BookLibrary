@@ -1,7 +1,7 @@
 package com.rightdevs.BookLibrary.mapper;
 
 import com.rightdevs.BookLibrary.dto.CategoryDto;
-import com.rightdevs.BookLibrary.dto.CategoryRequestDto;
+import com.rightdevs.BookLibrary.dto.request.CategoryRequestDto;
 import com.rightdevs.BookLibrary.entity.Category;
 import com.rightdevs.BookLibrary.entity.User;
 

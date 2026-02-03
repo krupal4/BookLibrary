@@ -1,4 +1,4 @@
-package com.rightdevs.BookLibrary.dto;
+package com.rightdevs.BookLibrary.dto.response;
 
 import lombok.*;
 

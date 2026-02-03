@@ -1,4 +1,4 @@
-package com.rightdevs.BookLibrary.dto;
+package com.rightdevs.BookLibrary.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Data
-public class SignUpRequestDto {
+public class LoginRequestDto {
     String email;
     String password;
-    String name;
 }

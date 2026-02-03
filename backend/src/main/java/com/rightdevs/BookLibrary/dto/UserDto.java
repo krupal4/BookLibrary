@@ -1,5 +1,6 @@
 package com.rightdevs.BookLibrary.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,8 @@ public class UserDto {
     Long id;
     String name;
     String email;
+
+    @JsonIgnore
     String password;
 
     @Override
