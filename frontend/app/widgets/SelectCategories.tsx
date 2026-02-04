@@ -1,27 +1,28 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Select, type InputRef } from "antd";
 import { Repository } from "~/common/Repository";
 import type CategoryModel from "~/models/CategoryModel";
-import menu from "antd/es/menu/menu";
-
-type SelectCategoriesProps = {
-  onChangeSelected: (selectedIds: string[]) => void;
-};
 import { Divider, Input, Space, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useRef } from "react";
 
 let index = 1;
-const SelectCategories: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(true);
-  const [items, setItems] = useState<CategoryModel[]    >([]);
+
+type SelectCategoriesProps = {
+  value?: CategoryModel[];
+  onChange?: (selected: CategoryModel[]) => void;
+};
+
+const SelectCategories: React.FC<SelectCategoriesProps> = ({ value, onChange }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [items, setItems] = useState<CategoryModel[]>([]);
   const [name, setName] = useState("");
   const inputRef = useRef<InputRef>(null);
 
-  useEffect(() => { 
+  useEffect(() => {
     Repository.instance.getCategories().then((data: CategoryModel[]) => {
-        setItems(data);
-        setIsLoading(false);
+      setItems(data);
+      setIsLoading(false);
     });
   }, []);
 
@@ -33,22 +34,32 @@ const SelectCategories: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
   ) => {
     e.preventDefault();
-    setItems([...items, {name: name || `New item ${index++}`, id: undefined}]);
+    setItems([...items, { name: name || `New item ${index++}`, id: undefined }]);
     setName("");
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
   };
 
-if (isLoading) {
+  const onSelectionChange = (selectedIds: number[]) => {
+    if (onChange) {
+      onChange(items.filter(({ id }) => selectedIds.includes(id!)));
+    }
+  };
+
+  if (isLoading) {
     return <div>Loading categories...</div>;
-}
+  }
 
   return (
     <Select
       mode="multiple"
-      onInputKeyDown={(e) => { e.stopPropagation(); }}
-      style={{ width: 300 }}
+      value={value?.map(({ id }) => id!) ?? []}
+      onChange={onSelectionChange}
+      onInputKeyDown={(e) => {
+        e.stopPropagation();
+      }}
+      style={{ width: "100%" }}
       placeholder="Select categories"
       filterOption={(input, option) =>
         (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
@@ -56,7 +67,6 @@ if (isLoading) {
       popupRender={(menu) => (
         <>
           {menu}
-          {/* TODO: */}
           <Divider style={{ margin: "8px 0" }} />
           <Space style={{ padding: "0 8px 4px" }}>
             <Input
@@ -66,7 +76,7 @@ if (isLoading) {
               onChange={onNameChange}
               onKeyDown={(e) => e.stopPropagation()}
             />
-            <Button type="text" icon={<PlusOutlined />} onClick={addItem} disabled={true}> 
+            <Button type="text" icon={<PlusOutlined />} onClick={addItem} disabled={true}>
               Add Category
             </Button>
           </Space>

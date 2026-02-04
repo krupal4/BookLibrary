@@ -12,6 +12,6 @@ export default [
   },
   {
     path: "dashboard",
-    file: "pages/DashboardPage.tsx"
+    file: "routes/DashboardPage.tsx"
   },
 ] satisfies RouteConfig;

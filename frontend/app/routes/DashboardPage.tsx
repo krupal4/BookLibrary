@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BookFilled,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
+  SearchOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Button, Layout, Menu, message, theme } from "antd";
 import BooksPage from "~/pages/BooksPage";
-import CategoriesPage from "./CategoriesPage";
-import AuthorsPage from "./AuthorsPage";
+import CategoriesPage from "../pages/CategoriesPage";
 import { Navigate } from "react-router";
-import Title from "antd/es/skeleton/Title";
+import { AxiosHelper } from "~/common/AxiosHelper";
+import { authLoader } from "~/common/authLoader";
 
 enum MenuKey {
   Books = "1",
@@ -23,14 +23,39 @@ enum MenuKey {
 const { Header, Sider, Content } = Layout;
 
 const DashboardPage: React.FC = () => {
+  const [authLoaded, setAuthLoaded] = useState(false);
+  const [hasAuthError, setHasAuthError] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState<MenuKey>(MenuKey.Books);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  useEffect(() => {
+    const runAuthCheck = async () => {
+      try {
+        await authLoader();
+      } catch (e: any) {
+        setHasAuthError(true);
+        message.error(e?.message ?? "Not Logged In!");
+      } finally {
+        setAuthLoaded(true);
+      }
+    };
+
+    runAuthCheck();
+  }, []);
+
+  if (!authLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  if (hasAuthError) {
+    return <Navigate to="/login" replace />;
+  }
+
   return (
-    <Layout style={{ height: "100%" }}>
+    <Layout style={{ height: "88vh" }}>
       <Sider
         trigger={null}
         collapsible
@@ -53,6 +78,11 @@ const DashboardPage: React.FC = () => {
               key: MenuKey.Categories,
               icon: <VideoCameraOutlined />,
               label: "Categories",
+            },
+            {
+              key: MenuKey.Search,
+              icon: <SearchOutlined />,
+              label: "Search",
             },
             { key: MenuKey.Logout, icon: <UserOutlined />, label: "Logout" },
           ]}
@@ -93,11 +123,14 @@ const DashboardPage: React.FC = () => {
         >
           {
             {
-              [MenuKey.Books]: <BooksPage />,
-              [MenuKey.Categories]: <CategoriesPage />,
-              [MenuKey.Search]: <CategoriesPage />,
-              [MenuKey.Logout]: <Navigate to="/login" replace />,
-            }[selectedKey]
+              [MenuKey.Books]: () => <BooksPage />,
+              [MenuKey.Categories]: () => <CategoriesPage />,
+              [MenuKey.Search]: () => <div>Search Screen</div>,
+              [MenuKey.Logout]: () => {
+                AxiosHelper.eraseJwtToken();
+                return <Navigate to="/login" replace />
+              },
+            }[selectedKey]()
           }
         </Content>
       </Layout>

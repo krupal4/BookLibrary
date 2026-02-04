@@ -34,11 +34,9 @@ public class BookController {
 
     @GetMapping("/all")
     public ResponseEntity<List<BookDto>> getBooks(
-            @AuthenticationPrincipal User user,
-            @RequestParam int pageIndex,
-            @RequestParam int pageSize
+            @AuthenticationPrincipal User user
             ) {
-        List<BookDto> bookDtoList = bookService.getBooks(user.getId(), pageIndex, pageSize);
+        List<BookDto> bookDtoList = bookService.getBooks(user.getId());
         return ResponseEntity.ok(bookDtoList);
     }
 

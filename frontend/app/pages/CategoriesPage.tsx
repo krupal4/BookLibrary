@@ -13,8 +13,6 @@ import type { GetProps } from "antd";
 import type CategoryModel from "~/models/CategoryModel";
 import { Repository } from "~/common/Repository";
 
-interface CategoriesPageProps {}
-
 const SortableListItem: React.FC<
   GetProps<typeof List.Item> & { itemKey: number }
 > = (props) => {

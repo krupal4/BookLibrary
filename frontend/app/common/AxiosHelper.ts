@@ -11,27 +11,36 @@ export class AxiosHelper {
             },
         });
 
-        const requestInterceptor = {
-            onFulfilled: (config: any) => {
+        axiosInstance.interceptors.request.use(
+            (config) => {
                 const token = localStorage.getItem('authToken');
 
                 if (token && token !== "undefined") {
                     config.headers['Authorization'] = `Bearer ${token}`;
                 }
 
-                console.log("config: ", config)
-
                 return config;
             },
-            onRejected: (error: any) => {
-                console.log("error: ", error)
+            (error) => {
                 return Promise.reject(error);
             }
-        }
+        );
 
-        axiosInstance.interceptors.request.use(
-            requestInterceptor.onFulfilled,
-            requestInterceptor.onRejected,
+        axiosInstance.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (error.response?.status === 401 || error.response?.status === 403) {
+                    setTimeout(() => {
+                        localStorage.removeItem('authToken');
+                        window.location.href = '/login';
+                    }, 1000);
+                }
+
+                if (error.response?.data) {
+                    return Promise.reject(error.response?.data);
+                }
+                return Promise.reject(error);
+            }
         );
 
         return axiosInstance;
@@ -43,5 +52,9 @@ export class AxiosHelper {
 
     public static getJwtToken(): string | null {
         return localStorage.getItem('authToken');
+    }
+    
+    public static eraseJwtToken(): void {
+        return localStorage.removeItem('authToken');
     }
 }

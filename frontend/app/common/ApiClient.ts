@@ -1,5 +1,5 @@
 import { AxiosHelper } from "./AxiosHelper";
-import axios, { type AxiosInstance } from "axios";
+import type { AxiosInstance } from "axios";
 
 export class ApiClient {
     public static instance: ApiClient = new ApiClient();
@@ -15,6 +15,11 @@ export class ApiClient {
 
     public async post<TResponse>(endpoint: string, data: any): Promise<TResponse> {
         const res = await ApiClient.axios.post(endpoint, data);
+        return res.data as TResponse;
+    }
+
+    public async delete<TResponse>(endpoint: string, data: any): Promise<TResponse> {
+        const res = await ApiClient.axios.delete(endpoint, data);
         return res.data as TResponse;
     }
 }

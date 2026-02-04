@@ -3,9 +3,11 @@ class ApiConstants {
 
     static readonly login = "/api/auth/login";
     static readonly signup = "/api/auth/signUp";
+    static readonly validateAuth = "/api/auth/validate";
 
     static readonly books = "/api/books/all";
     static readonly saveBook = "/api/books/save";
+    static readonly deleteBook = "/api/books/delete";
 
     static readonly categories = "/api/categories/all";
     static readonly saveCategory = "/api/categories/save";

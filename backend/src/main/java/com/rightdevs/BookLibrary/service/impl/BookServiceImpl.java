@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getBooks(Long userId, int pageIndex, int pageSize) {
+    public List<BookDto> getBooks(Long userId) {
         List<Book> bookModels = bookRepository.findByCreatedById(userId);
         return bookModels.stream()
                 .map(BookMapper::toDto)

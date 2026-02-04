@@ -9,7 +9,7 @@ import java.util.List;
 public interface BookService {
     public BookDto createBook(BookDto bookDto);
 
-    public List<BookDto> getBooks(Long userId, int pageIndex, int pageSize);
+    public List<BookDto> getBooks(Long userId);
 
     public void deleteBook(Long bookId, Long userId) throws AccessDeniedException;
 }

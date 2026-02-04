@@ -10,9 +10,9 @@ class Repository {
 
   private constructor() {}
 
-  public async getBooks(pageIndex: number): Promise<BookModel[]> {
+  public async getBooks(): Promise<BookModel[]> {
     return await ApiClient.instance.get<BookModel[]>(
-        `${ApiConstants.books}?pageIndex=${pageIndex}&pageSize=3`
+        `${ApiConstants.books}`
     );
   }
 
@@ -54,6 +54,14 @@ class Repository {
 
   public async saveBook( bookModel: BookModel): Promise<BookModel> {
     return await ApiClient.instance.post(ApiConstants.saveBook, bookModel);
+  }
+
+  public async deleteBook(bookId: number): Promise<void> {
+    return await ApiClient.instance.delete(`${ApiConstants.deleteBook}/${bookId}`, {});
+  }
+  
+  public async validateAuth(): Promise<void> {
+    return await ApiClient.instance.get(ApiConstants.validateAuth);
   }
 }
 
